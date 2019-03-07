@@ -21,7 +21,7 @@ service ssh start
 [ -z "$ASPNETCORE_URLS" ] && export ASPNETCORE_URLS=http://*:"$PORT"
 
 # If there is any command line argument specified, run it
-[ $# -ne 0 ] && exec "$@"
+exec /opt/startup.sh
 
 # Pick up one .csproj file from repository where git push puts files into
 CSPROJ=`ls -1 /home/site/repository/*.csproj 2>/dev/null | head -1`

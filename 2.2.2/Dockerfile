@@ -3,6 +3,7 @@ LABEL maintainer="Azure App Services Container Images <appsvc-images@microsoft.c
 
 COPY bin.zip /tmp
 COPY init_container.sh /bin/
+COPY startup.sh /opt/
 
 RUN mkdir -p /home/LogFiles \
   && echo "root:Docker!" | chpasswd \
@@ -19,7 +20,8 @@ RUN mkdir -p /home/LogFiles \
   && mkdir -p /defaulthome/hostingstart \ 
   && unzip -q -o /tmp/bin.zip -d /defaulthome/hostingstart \
   && rm /tmp/bin.zip \
-  && chmod 755 /bin/init_container.sh 
+  && chmod 755 /bin/init_container.sh \
+  && chmod 755 /opt/startup.sh 
 
 COPY hostingstart.html /defaulthome/hostingstart/wwwroot/
 
