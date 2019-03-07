@@ -15,13 +15,14 @@ Dotnet quickstart: https://aka.ms/dotnet-qs
 EOL
 cat /etc/motd
 
+# starting sshd process
 sed -i "s/SSH_PORT/$SSH_PORT/g" /etc/ssh/sshd_config
 service ssh start
 
 [ -z "$ASPNETCORE_URLS" ] && export ASPNETCORE_URLS=http://*:"$PORT"
 
 # If there is any command line argument specified, run it
-exec /opt/startup.sh
+/opt/startup.sh
 
 # Pick up one .csproj file from repository where git push puts files into
 CSPROJ=`ls -1 /home/site/repository/*.csproj 2>/dev/null | head -1`
