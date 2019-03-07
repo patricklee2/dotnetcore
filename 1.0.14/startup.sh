@@ -15,7 +15,6 @@ then
           exec "$@"
         else
           echo "file $word does not exist"
-          exit
         fi
       fi
     done

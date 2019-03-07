@@ -1,9 +1,12 @@
 FROM oryxprod/dotnetcore-2.2:20190301.2
 LABEL maintainer="Azure App Services Container Images <appsvc-images@microsoft.com>"
 
+RUN mkdir -p /opt/startup
+RUN mkdir -p /tmp
+
 COPY bin.zip /tmp
 COPY init_container.sh /bin/
-COPY startup.sh /opt/
+COPY startup.sh /opt/startup/
 
 RUN mkdir -p /home/LogFiles \
   && echo "root:Docker!" | chpasswd \
@@ -20,16 +23,14 @@ RUN mkdir -p /home/LogFiles \
   && mkdir -p /defaulthome/hostingstart \ 
   && unzip -q -o /tmp/bin.zip -d /defaulthome/hostingstart \
   && rm /tmp/bin.zip \
-  && chmod 755 /bin/init_container.sh \
-  && chmod 755 /opt/startup.sh 
+  && chmod 755 /bin/init_container.sh 
 
 COPY hostingstart.html /defaulthome/hostingstart/wwwroot/
 
 # configure startup
 COPY sshd_config /etc/ssh/
-COPY ssh_setup.sh /tmp
-RUN mkdir -p /opt/startup \
-   && chmod -R +x /opt/startup \
+COPY ssh_setup.sh /tmp 
+RUN chmod -R +x /opt/startup \
    && chmod -R +x /tmp/ssh_setup.sh \
    && (sleep 1;/tmp/ssh_setup.sh 2>&1 > /dev/null) \
    && rm -rf /tmp/* 
